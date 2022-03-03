@@ -1,0 +1,63 @@
+{
+  "name":     "drupal/phingdrushtask",
+  "homepage": "https://www.drupal.org/project/phingdrushtask",
+  "description": "Drush task for Phing.",
+  "keywords": ["phing", "drush", "drupal", "continuous integration", "ci"],
+  "type": "library",
+  "license": "GPL-2.0+",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/phingdrushtask",
+    "source": "http://cgit.drupalcode.org/phingdrushtask"
+  },
+  "authors": [
+    {
+      "name": "Pierre Buyle",
+      "email": "pierre@buyle.org",
+      "role": "Author"
+    },
+    {
+      "name": "Frederic Dewinne",
+      "email": "frederic@continuousphp.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Pol Dellaiera",
+      "email": "pol.dellaiera@protonmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "phing/phing": "~2.9",
+    "drush/drush": "6 - 11"
+  },
+  "require-dev": {
+    "drupal/coder": "^8.2",
+    "phpunit/phpunit": "^5.6",
+    "mockery/mockery": "^0.9",
+    "bovigo/assert": "^1.7",
+    "satooshi/php-coveralls": "^1.0",
+    "phpunit/php-code-coverage": "^4.0"
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
+      "vendor/bin/phpcs --config-set show_progress 1",
+      "cp scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
+    ],
+    "post-update-cmd": [
+      "vendor/bin/phpcs --config-set installed_paths ../../drupal/coder/coder_sniffer",
+      "vendor/bin/phpcs --config-set show_progress 1",
+      "cp scripts/pre-push.sh .git/hooks/pre-push && chmod +x .git/hooks/pre-push"
+    ],
+    "phpcs": "./vendor/bin/phpcs --standard=Drupal,DrupalPractice --ignore=vendor .",
+    "phpcbf": "./vendor/bin/phpcbf --standard=Drupal,DrupalPractice --ignore=vendor .",
+    "phpunit": "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c tests/phpunit.xml tests",
+    "coveralls": "./vendor/bin/coveralls"
+  },
+  "autoload": {
+    "psr-4": {
+      "Phing\\Drush\\": "src/",
+      "Phing\\Drush\\Tests\\": "./tests/"
+    }
+  }
+}
